@@ -6,53 +6,58 @@
     <title>Assignment Submission Portal</title>
     <style>
         :root {
-            --bg-color: #f8f9fa;
+            --bg-color: #f3f4f6;
             --card-bg: #ffffff;
             --text-main: #212529;
-            --text-muted: #6c757d;
-            --accent: #4f46e5; /* Modern Indigo */
+            --text-muted: #6b7280;
+            --accent: #4f46e5; 
             --accent-hover: #4338ca;
             --border-color: #e5e7eb;
             --success: #10b981;
+            --error: #ef4444;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
 
         body {
-            background-color: var(--bg-color);
+            background: radial-gradient(circle at top left, rgba(79, 70, 229, 0.05) 0%, transparent 40%),
+                        radial-gradient(circle at bottom right, rgba(16, 185, 129, 0.03) 0%, transparent 40%),
+                        var(--bg-color);
             color: var(--text-main);
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            padding: 20px;
+            padding: 24px;
         }
 
         .container {
             width: 100%;
-            max-width: 480px;
+            max-width: 460px;
             background: var(--card-bg);
-            padding: 40px 32px;
+            padding: 40px 36px;
             border-radius: 16px;
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
-            position: relative;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02), 
+                        0 20px 25px -5px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.8);                     
         }
 
         header {
             text-align: center;
-            margin-bottom: 32px;
+            margin-bottom: 36px;
         }
 
         header h1 {
-            font-size: 24px;
+            font-size: 26px;
             font-weight: 700;
             letter-spacing: -0.5px;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
         }
 
         header p {
             color: var(--text-muted);
-            font-size: 14px;
+            font-size: 14.5px;
+            line-height: 1.4;
         }
 
         .input-group {
@@ -61,45 +66,59 @@
 
         label {
             display: block;
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 600;
             margin-bottom: 8px;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.75px;
             color: var(--text-main);
         }
 
         input[type="text"] {
             width: 100%;
-            padding: 12px 16px;
+            padding: 13px 16px;
             border: 1px solid var(--border-color);
-            border-radius: 8px;
+            border-radius: 10px;
             font-size: 15px;
-            transition: all 0.2s ease;
-            background-color: #fafafa;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            background-color: #f9fafb;
+            color: var(--text-main);
         }
 
         input[type="text"]:focus {
             outline: none;
             border-color: var(--accent);
             background-color: #fff;
-            box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+            box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.08);
         }
 
         .file-dropzone {
             position: relative;
-            border: 2px dashed var(--border-color);
-            padding: 32px 20px;
-            border-radius: 8px;
+            border: 2px dashed #d1d5db;
+            padding: 36px 20px;
+            border-radius: 12px;
             text-align: center;
-            background-color: #fafafa;
+            background-color: #f9fafb;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            overflow: hidden;
         }
 
         .file-dropzone:hover {
             border-color: var(--accent);
-            background-color: rgba(79, 70, 229, 0.02);
+            background-color: rgba(79, 70, 229, 0.01);
+        }
+
+        .file-dropzone .icon-wrapper,
+        .file-dropzone .dropzone-text,
+        .file-dropzone .file-name-preview {
+            position: relative;
+            z-index: 2;
+            pointer-events: none; 
         }
 
         .file-dropzone input[type="file"] {
@@ -107,25 +126,48 @@
             top: 0; left: 0; width: 100%; height: 100%;
             opacity: 0;
             cursor: pointer;
+            z-index: 1;
         }
 
-        .dropzone-icon {
-            font-size: 32px;
-            margin-bottom: 10px;
-            display: inline-block;
+        .icon-wrapper {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+            border: 1px solid var(--border-color);
+            color: var(--text-muted);
+            transition: all 0.2s ease;
+        }
+
+        .file-dropzone:hover .icon-wrapper {
+            color: var(--accent);
+            border-color: rgba(79, 70, 229, 0.2);
+            box-shadow: 0 4px 6px rgba(79, 70, 229, 0.05);
         }
 
         .dropzone-text {
             font-size: 14px;
             color: var(--text-muted);
+            font-weight: 500;
         }
 
         .file-name-preview {
-            margin-top: 8px;
             font-size: 13px;
             font-weight: 600;
             color: var(--accent);
+            background: rgba(79, 70, 229, 0.06);
+            padding: 6px 12px;
+            border-radius: 20px;
             display: none;
+            max-width: 90%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            margin-top: 4px;
         }
 
         button {
@@ -134,45 +176,88 @@
             background-color: var(--accent);
             color: white;
             border: none;
-            border-radius: 8px;
-            font-size: 16px;
+            border-radius: 10px;
+            font-size: 15px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.2s ease;
-            margin-top: 8px;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            margin-top: 12px;
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.15);
+        }
+        
+        button:hover { 
+            background-color: var(--accent-hover);
+            transform: translateY(-1px);
+            box-shadow: 0 6px 16px rgba(79, 70, 229, 0.2);
+        }
+        
+        button:active {
+            transform: translateY(0);
         }
 
-        button:hover { background-color: var(--accent-hover); }
-        button:disabled { background-color: var(--text-muted); cursor: not-allowed; opacity: 0.6; }
+        button:disabled { 
+            background-color: #9ca3af; 
+            cursor: not-allowed; 
+            opacity: 0.6;
+            transform: none;
+            box-shadow: none;
+        }
 
-        /* Modern Notification Overlay */
         .status-overlay {
             display: none;
             text-align: center;
-            padding: 20px 10px;
-            animation: fadeIn 0.3s ease forward;
+            padding: 24px 0;
+            animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
-        .status-icon {
-            font-size: 48px;
-            margin-bottom: 16px;
+        .status-icon-wrapper {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 20px;
+            transition: background 0.3s ease;
         }
 
         .status-title {
-            font-size: 20px;
+            font-size: 22px;
             font-weight: 700;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
+            letter-spacing: -0.3px;
         }
 
         .status-desc {
-            font-size: 14px;
+            font-size: 14.5px;
             color: var(--text-muted);
-            margin-bottom: 24px;
+            margin-bottom: 12px;
             line-height: 1.5;
         }
 
+        /* --- Custom UI Animations --- */
+        .animate-hourglass {
+            animation: flipHourglass 2s cubic-bezier(0.77, 0, 0.175, 1) infinite;
+        }
+
+        @keyframes flipHourglass {
+            0% { transform: rotate(0deg); }
+            45% { transform: rotate(0deg); }
+            55% { transform: rotate(180deg); }
+            100% { transform: rotate(180deg); }
+        }
+
+        .animate-sparkle {
+            animation: sparkleGlow 1.5s ease-in-out infinite alternate;
+        }
+
+        @keyframes sparkleGlow {
+            0% { transform: scale(0.95); filter: drop-shadow(0 0 2px rgba(16, 185, 129, 0.2)); }
+            100% { transform: scale(1.08); filter: drop-shadow(0 0 12px rgba(16, 185, 129, 0.6)); }
+        }
+
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
+            from { opacity: 0; transform: translateY(8px); }
             to { opacity: 1; transform: translateY(0); }
         }
     </style>
@@ -183,39 +268,40 @@
     <div id="formContent">
         <header>
             <h1>Submit Assignment</h1>
-            <p>Your submission will be uploaded securely and privately.</p>
+            <p>Your submission will be uploaded securely.</p>
         </header>
 
         <form id="uploadForm">
             <div class="input-group">
                 <label for="studentName">Full Name</label>
-                <input type="text" id="studentName" required>
+                <input type="text" id="studentName" placeholder="Enter your full name" required>
             </div>
             
             <div class="input-group">
                 <label for="studentId">Roll Number</label>
-                <input type="text" id="studentId" required>
+                <input type="text" id="studentId" placeholder="Enter your roll number" required>
             </div>
             
             <div class="input-group">
                 <label>Assignment File</label>
                 <div class="file-dropzone">
-                    <span class="dropzone-icon">📁</span>
+                    <div class="icon-wrapper" id="dropzoneIconSlot">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                    </div>
                     <p class="dropzone-text" id="dropzoneText">Click or drag file here to upload</p>
                     <div class="file-name-preview" id="fileNamePreview"></div>
                     <input type="file" id="file" accept=".pdf" required>
                 </div>
             </div>
 
-            <button type="submit" id="submitBtn">Submit</button>
+            <button type="submit" id="submitBtn">Submit Assignment</button>
         </form>
     </div>
-    
+        
     <div id="statusOverlay" class="status-overlay">
-        <div class="status-icon" id="statusIcon">⏳</div>
+        <div class="status-icon-wrapper" id="statusIcon"></div>
         <div class="status-title" id="statusTitle">Uploading...</div>
         <div class="status-desc" id="statusDesc">Please keep this page open while your assignment is being transmitted.</div>
-        <button id="resetBtn" style="display:none; background-color: var(--text-main);" onclick="window.location.reload()">Submit Another Assignment</button>
     </div>
 </div>
 
@@ -230,17 +316,30 @@
     const statusIcon = document.getElementById('statusIcon');
     const statusTitle = document.getElementById('statusTitle');
     const statusDesc = document.getElementById('statusDesc');
-    const resetBtn = document.getElementById('resetBtn');
+    const dropzoneIconSlot = document.getElementById('dropzoneIconSlot');
 
-    // Handle file input selection UI
+    const hourglassSvg = `
+        <svg class="animate-hourglass" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 2h14M5 22h14M19 2v4a7 7 0 0 1-7 7 7 7 0 0 1-7-7V2M5 22v-4a7 7 0 0 1 7-7 7 7 0 0 1 7 7v4"/>
+        </svg>`;
+
+    const sparkleSvg = `
+        <svg class="animate-sparkle" width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 3v4M12 17v4M3 12h4M17 12h4M18.36 5.64l-2.83 2.83M8.46 15.54l-2.83 2.83M18.36 18.36l-2.83-2.83M8.46 8.46L5.64 5.64"/>
+        </svg>`;
+
+    const errorSvg = `<svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="var(--error)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>`;
+    const attachedSvg = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>`;
+
     fileInput.addEventListener('change', function() {
         if (fileInput.files.length > 0) {
-            dropzoneText.innerText = "File selected:";
+            dropzoneText.innerText = "Selected Document:";
+            dropzoneIconSlot.innerHTML = attachedSvg;
+            dropzoneIconSlot.style.background = "rgba(79, 70, 229, 0.08)";
             fileNamePreview.innerText = fileInput.files[0].name;
             fileNamePreview.style.display = "block";
         } else {
-            dropzoneText.innerText = "Click or drag file here to upload";
-            fileNamePreview.style.display = "none";
+            window.location.reload();
         }
     });
 
@@ -248,20 +347,20 @@
         e.preventDefault();
         
         const selectedFile = fileInput.files[0];
-        // Strict verification: Reject the file if it does not end in .pdf
-    if (selectedFile && !selectedFile.name.toLowerCase().endsWith('.pdf')) {
-        alert("Submission Rejected: Only PDF files (.pdf) are allowed for this assignment.");
-        
-        // Reset the form upload layout UI so they can select a new file
-        fileInput.value = "";
-        dropzoneText.innerText = "Click or drag file here to upload";
-        fileNamePreview.style.display = "none";
-        return; // This completely stops the file from sending to your Google Drive
-    }
-        // Instantly switch to the loading state screen
+        if (selectedFile && !selectedFile.name.toLowerCase().endsWith('.pdf')) {
+            alert("Submission Rejected: Only PDF files (.pdf) are allowed for this assignment.");
+            fileInput.value = "";
+            dropzoneText.innerText = "Click or drag file here to upload";
+            fileNamePreview.style.display = "none";
+            return;
+        }
+
         formContent.style.display = "none";
         statusOverlay.style.display = "block";
-        statusIcon.innerText = "⏳";
+        
+        statusIcon.innerHTML = hourglassSvg;
+        statusIcon.style.background = "rgba(79, 70, 229, 0.08)";
+        
         statusTitle.innerText = "Uploading Securely...";
         statusDesc.innerText = "Processing your document and saving it. Please hold on.";
 
@@ -283,30 +382,26 @@
             .then(response => response.json())
             .then(data => {
                 if(data.result === "success") {
-                    // Huge, clear success screen
-                    statusIcon.innerText = "✨";
+                    statusIcon.innerHTML = sparkleSvg;
+                    statusIcon.style.background = "rgba(16, 185, 129, 0.1)";
+                    
                     statusTitle.innerText = "Submission Successful!";
                     statusTitle.style.color = "var(--success)";
                     statusDesc.innerText = "Your assignment has been securely saved. You can close this window now.";
-                    resetBtn.style.display = "block";
                 } else {
-                    // Clear error state screen
-                    statusIcon.innerText = "❌";
+                    statusIcon.innerHTML = errorSvg;
+                    statusIcon.style.background = "rgba(239, 68, 68, 0.08)";
                     statusTitle.innerText = "Submission Failed";
-                    statusTitle.style.color = "#991b1b";
-                    statusDesc.innerText = "Server Error: " + data.error + "\n\nPlease click below to try again.";
-                    resetBtn.innerText = "Try Again";
-                    resetBtn.style.display = "block";
+                    statusTitle.style.color = "var(--error)";
+                    statusDesc.innerText = "Server Error: " + data.error + "\n\nPlease refresh the page to try again.";
                 }
             })
             .catch(error => {
-                // Network breakdown screen
-                statusIcon.innerText = "📡";
+                statusIcon.innerHTML = errorSvg;
+                statusIcon.style.background = "rgba(239, 68, 68, 0.08)";
                 statusTitle.innerText = "Connection Error";
-                statusTitle.style.color = "#991b1b";
+                statusTitle.style.color = "var(--error)";
                 statusDesc.innerText = "Could not reach the upload server. Please double-check your network connection and try again.";
-                resetBtn.innerText = "Try Again";
-                resetBtn.style.display = "block";
             });
         };
     });
