@@ -3,92 +3,233 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Private Assignment Submission</title>
+    <title>Assignment Submission Portal</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 50px; background-color: #f4f4f9; }
-        .form-container { max-width: 450px; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); margin: 0 auto; }
-        h2 { text-align: center; color: #333; }
-        .input-group { margin-bottom: 20px; }
-        label { display: block; margin-bottom: 5px; font-weight: bold; color: #555; }
-        input[type="text"], input[type="file"] { width: 100%; padding: 10px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px; }
-        button { width: 100%; padding: 12px; background: #007bff; border: none; color: white; font-size: 16px; border-radius: 4px; cursor: pointer; }
-        button:hover { background: #0056b3; }
-        #status { text-align: center; margin-top: 15px; font-weight: bold; }
+        :root {
+            --bg-color: #f8f9fa;
+            --card-bg: #ffffff;
+            --text-main: #212529;
+            --text-muted: #6c757d;
+            --accent: #4f46e5; /* Modern Indigo */
+            --accent-hover: #4338ca;
+            --border-color: #e5e7eb;
+            --success: #10b981;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 480px;
+            background: var(--card-bg);
+            padding: 40px 32px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        header h1 {
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin-bottom: 8px;
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        .input-group {
+            margin-bottom: 24px;
+        }
+
+        label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-main);
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 15px;
+            transition: all 0.2s ease;
+            background-color: #fafafa;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: var(--accent);
+            background-color: #fff;
+            box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+        }
+
+        /* Modern Custom File Upload Dropzone */
+        .file-dropzone {
+            position: relative;
+            border: 2px dashed var(--border-color);
+            padding: 32px 20px;
+            border-radius: 8px;
+            text-align: center;
+            background-color: #fafafa;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .file-dropzone:hover {
+            border-color: var(--accent);
+            background-color: rgba(79, 70, 229, 0.02);
+        }
+
+        .file-dropzone input[type="file"] {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .dropzone-icon {
+            font-size: 32px;
+            margin-bottom: 10px;
+            display: inline-block;
+        }
+
+        .dropzone-text {
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        .file-name-preview {
+            margin-top: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--accent);
+            display: none;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-top: 8px;
+        }
+
+        button:hover { background-color: var(--accent-hover); }
+        button:disabled { background-color: var(--text-muted); cursor: not-allowed; opacity: 0.6; }
+
+        #status {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+            font-weight: 500;
+            padding: 10px;
+            border-radius: 6px;
+            display: none;
+        }
     </style>
 </head>
 <body>
 
-<div class="form-container">
-    <h2>Submit Assignment</h2>
+<div class="container">
+    <header>
+        <h1>Submit Assignment</h1>
+        <p>Your submission will be uploaded securely and privately.</p>
+    </header>
+
     <form id="uploadForm">
         <div class="input-group">
             <label for="studentName">Full Name</label>
-            <input type="text" id="studentName" required>
+            <input type="text" id="studentName" placeholder="e.g., Jane Doe" required>
         </div>
+        
         <div class="input-group">
             <label for="studentId">Student ID / Roll Number</label>
-            <input type="text" id="studentId" required>
+            <input type="text" id="studentId" placeholder="e.g., FND2401" required>
         </div>
+        
         <div class="input-group">
-            <label for="file">Upload Assignment (PDF, Docx, Image)</label>
-            <input type="file" id="file" required>
+            <label>Assignment File</label>
+            <div class="file-dropzone">
+                <span class="dropzone-icon">📁</span>
+                <p class="dropzone-text" id="dropzoneText">Click or drag file here to upload</p>
+                <div class="file-name-preview" id="fileNamePreview"></div>
+                <input type="file" id="file" required>
+            </div>
         </div>
+
         <button type="submit" id="submitBtn">Submit Securely</button>
     </form>
+    
     <div id="status"></div>
 </div>
 
 <script>
-    // Your verified Google Web App URL (with the correct 'macros' spelling):
+    // Your verified Web App URL remains perfectly preserved below:
     const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzQfKoZGiQxtKNov0eC2xjlFhv2YCeMnNv_sB01w48YvEQlY2VymXvoXdDA1B8JIqfWJA/exec";
+
+    const fileInput = document.getElementById('file');
+    const dropzoneText = document.getElementById('dropzoneText');
+    const fileNamePreview = document.getElementById('fileNamePreview');
+
+    // Update the UI when a file is selected
+    fileInput.addEventListener('change', function() {
+        if (fileInput.files.length > 0) {
+            dropzoneText.innerText = "File selected:";
+            fileNamePreview.innerText = fileInput.files[0].name;
+            fileNamePreview.style.display = "block";
+        } else {
+            dropzoneText.innerText = "Click or drag file here to upload";
+            fileNamePreview.style.display = "none";
+        }
+    });
 
     document.getElementById('uploadForm').addEventListener('submit', function(e) {
         e.preventDefault();
         
         const submitBtn = document.getElementById('submitBtn');
         const statusDiv = document.getElementById('status');
-        const fileInput = document.getElementById('file').files[0];
+        const selectedFile = fileInput.files[0];
         
         submitBtn.disabled = true;
-        statusDiv.innerText = "Uploading your assignment privately...";
-        statusDiv.style.color = "orange";
+        submitBtn.innerText = "Uploading securely...";
+        
+        statusDiv.style.display = "block";
+        statusDiv.innerText = "Processing your file...";
+        statusDiv.style.color = "#b45309";
+        statusDiv.style.backgroundColor = "#fef3c7";
 
         const reader = new FileReader();
-        reader.readAsDataURL(fileInput);
+        reader.readAsDataURL(selectedFile);
         
         reader.onload = function() {
             const formData = new URLSearchParams();
             formData.append('fileData', reader.result);
-            formData.append('fileName', fileInput.name);
-            formData.append('studentName', document.getElementById('studentName').value);
-            formData.append('studentId', document.getElementById('studentId').value);
-
-            fetch(WEB_APP_URL, {
-                method: 'POST',
-                body: formData,
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-            })
-            .then(response => response.json())
-            .then(data => {
-                if(data.result === "success") {
-                    statusDiv.innerText = "Success! Your assignment has been securely submitted.";
-                    statusDiv.style.color = "green";
-                    document.getElementById('uploadForm').reset();
-                } else {
-                    statusDiv.innerText = "Error: " + data.error;
-                    statusDiv.style.color = "red";
-                }
-            })
-            .catch(error => {
-                statusDiv.innerText = "An error occurred during submission.";
-                statusDiv.style.color = "red";
-            })
-            .finally(() => {
-                submitBtn.disabled = false;
-            });
-        };
-    });
-</script>
-
-</body>
-</html>
+            formData.append('fileName', selectedFile
